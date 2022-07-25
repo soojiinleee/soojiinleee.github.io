@@ -51,7 +51,9 @@ body.light {
       color: $middle-gray;
     }
     &:hover {
-      text-shadow: $light-hover-text-shadow;
+      // text-shadow: $light-hover-text-shadow;
+      background-color: #d4dde928;
+      border: 0.5px solid #afb4bb0c;
     }
   }
 
@@ -69,4 +71,11 @@ body.light {
       color: $navigator-text-color;
     }
   }
+}
+
+.thumbnail-date{
+  color: #a9a9a9;
+  font-weight: normal;
+  font-size: 0.9rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

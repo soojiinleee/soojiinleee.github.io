@@ -33,7 +33,7 @@ const SunIcon = () => {
   )
 }
 function getTheme(checked) {
-  return checked ? THEME.DARK : THEME.LIGHT
+  return checked ? THEME.LIGHT : THEME.LIGHT
 }
 
 function toggleTheme(theme) {

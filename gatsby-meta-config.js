@@ -1,6 +1,6 @@
 module.exports = {
   title: `電算日誌_전산일지`,
-  description: `개발과 그 외의 것들에 대한 기록`,
+  description: `개발 블로그`,
   author: `[soojin]`,
   introduction: `개발과 그 외의 것들에 대한 기록`,
   siteUrl: `https://soojiinleee.github.io/`, // Your blog site url
