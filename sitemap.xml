@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url> <loc>https://soojiinleee.github.io/Django/drf-authentication_01---tokenauthentication/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://soojiinleee.github.io/Django/drf-authentication(02)-dj-rest-auth-&amp;-jwt/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
+<url> <loc>https://soojiinleee.github.io/Django/drf-authentication(01)-dj-rest-auth-&amp;-tokenauthentication/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://soojiinleee.github.io/Django/settings-디렉터리로-환경-설정-분리/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://soojiinleee.github.io/TDD/TDD05/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
 <url> <loc>https://soojiinleee.github.io/Git/git-fetch/</loc> <changefreq>daily</changefreq> <priority>0.7</priority> </url>
