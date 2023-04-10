@@ -1,7 +1,7 @@
 ---
 title: '📚 TDD Chapter 05 : 사용자 입력 저장하기'
 date: 2022-11-14 22:11:23
-category: 공부
+category: Book
 thumbnail: { thumbnailSrc }
 draft: false
 ---

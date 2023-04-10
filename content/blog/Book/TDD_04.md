@@ -1,7 +1,7 @@
 ---
 title: '📚 TDD Chapter 04 : `templates`을 이용한 FT 테스트'
 date: 2022-05-03
-category: 공부
+category: Book
 thumbnail: { thumbnailSrc }
 draft: false
 ---

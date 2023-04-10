@@ -1,7 +1,7 @@
 ---
 title: '📚 Tiny Python Project 01 : : 파이썬 프로그램 작성 및 테스트 방법'
 date: 2022-04-24
-category: 공부
+category: Book
 thumbnail: { thumbnailSrc }
 draft: false
 ---
