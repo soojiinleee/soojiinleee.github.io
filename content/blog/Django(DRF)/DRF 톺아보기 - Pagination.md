@@ -13,8 +13,6 @@
 
 # 🔷 개념
 
----
-
 - 대량의 데이터를 여러 페이지로 나누어 조회하는 기법
 - REST API에서 페이지네이션을 적용하면 클라이언트가 한 번에 모든 데이터를 불러오는 것이 아니라, 필요한 만큼만 가져올 수 있음
     
@@ -23,9 +21,8 @@
 - view가 `generic views` or `viewsets`  구현되어 있다면, settings.py에 설정하면 자동으로 실행됨
 - `APIView` 으로 구현한 경우 직접 페이지네이션한 응답을 전달해야 함
 
-# 🔷 1. PageNumberPagination
 
----
+# 🔷 1. PageNumberPagination
 
 ✅ **개념**
 
@@ -201,8 +198,6 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 # 🔷 2. LimitOffsetPagination
 
----
-
 ✅ **개념**
 
 - 클라이언트가 `limit`(한 번에 가져올 데이터 개수)와 `offset`(데이터 시작 위치)을 직접 지정하는 방식
@@ -253,14 +248,12 @@ REST_FRAMEWORK = {
 }
 ```
 
-🚀 `count`, `next`, `previous` 정보가 있기 때문에 [PageNumberPagination](https://www.notion.so/DRF-Pagination-19fc8dab33a280b489cef2ba8ea20c99?pvs=21)과 마찬가지로 `Response Header`에 해당 정보 추가할 수 있음 
+🚀 `count`, `next`, `previous` 정보가 있기 때문에 [PageNumberPagination](##-🚀-페이지네이션-정보-Response-Header에-추가하기)과 마찬가지로 `Response Header`에 해당 정보 추가할 수 있음 
 
 > https://www.django-rest-framework.org/api-guide/pagination/#limitoffsetpagination
 > 
 
 # 🔷 3. CursorPagination
-
----
 
 ✅ **개념**
 
@@ -311,15 +304,13 @@ REST_FRAMEWORK = {
 
 # 🔹 DRF Pagination 방식 비교표
 
----
-
 | ✅ 방식 | ✅ URL 예제 | ✅ 특징 | ✅ 장점 | ✅ 단점 |
 | --- | --- | --- | --- | --- |
 | `PageNumberPagination` | `?page=2` | **페이지 번호 기반** | 직관적인 페이지 이동 | 대량 데이터에서 성능 저하 가능 |
 | `LimitOffsetPagination` | `?limit=10&offset=20` | **SQL `LIMIT OFFSET` 방식** | 유연한 범위 선택 가능 | `offset`이 클 경우 속도 저하 |
 | `CursorPagination` | `?cursor=abc123` | **커서 기반 무한 스크롤** | 성능 우수, `count` 쿼리 없음 | 특정 페이지 직접 이동 불가능 |
 
----
+
 
 # 🔹 어떤 Pagination을 선택해야 할까?
 
