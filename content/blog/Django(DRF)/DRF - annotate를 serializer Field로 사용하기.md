@@ -1,9 +1,19 @@
-# 🔷요구 사항
+# Contents
+- [🔷 요구 사항](#-🔷-요구-사항)
+- [🔷 문제 상황](#-🔷-문제 상황)
+- [🔷 해결](#-🔷-해결)
+  - [1. ViewSet의 get_queryset 수정하기](##-1.-ViewSet의-get_queryset-수정하기)
+  - [2. models.Manager 활용하기](##-2.-models.Manager-활용하기)
+
+<br>
+<br>
+
+# 🔷 요구 사항
 
 - 공연 상태 기준으로 공연 목록 필터링
     - (e.g.) `/performance?status=예정`
 
-# 🔷문제 상황
+# 🔷 문제 상황
 
 ```python
 # models.py
@@ -36,7 +46,7 @@ class Performance(models.Model):
     → ✨ `annotate()`를 활용해서 쿼리셋에 필드 추가 해야 함
     
 
-# 🔷해결
+# 🔷 해결
 
 ## 1. `ViewSet`의 `get_queryset` 수정하기
 
@@ -143,7 +153,7 @@ class PerformanceSerializer(serializers.ModelSerializer):
 
 ```
 
-### ✅최종 view
+### ✅ 최종 view
 
 ```python
 from rest_framework import viewsets, mixins
