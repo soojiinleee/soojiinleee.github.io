@@ -295,7 +295,7 @@ REST_FRAMEWORK = {
 - `cursor` 값은 `id` 또는 `created_at` 등의 기준을 포함하고 있어, 직접 수정하면 원치 않는 데이터 조회가 발생할 수 있음
 - `cursor` 는 암호화 되어 전달 되므로 `Response Header`에 추가하는 게 더 좋음
     
-    →  [PageNumberPagination](https://www.notion.so/DRF-Pagination-19fc8dab33a280b489cef2ba8ea20c99?pvs=21)에서 `Response Header` 추가한 내용 참고✨
+    →  [PageNumberPagination](##-🚀-페이지네이션-정보-Response-Header에-추가하기)에서 `Response Header` 추가한 내용 참고✨
     
 - `count`(전체 데이터 개수) 쿼리가 없음
 
