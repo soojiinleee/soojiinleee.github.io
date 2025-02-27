@@ -1,4 +1,2 @@
 User-agent: *
-Allow: /
-Sitemap: https://soojiinleee.github.io/sitemap.xml
-Host: https://soojiinleee.github.io
+Disallow:
