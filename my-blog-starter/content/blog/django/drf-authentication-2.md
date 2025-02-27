@@ -1,9 +1,7 @@
 ---
-title: 👮 DRF Authentication(02) dj-rest-auth-&-JWT
+title: 📌 DRF Authentication 2
 date: 2023-03-18 12:03:99
-category: Django
-thumbnail: { thumbnailSrc }
-draft: false
+description: DRF의 dj-rest-auth & JWT 적용하기
 ---
 <br>
 
@@ -66,7 +64,7 @@ draft: false
    - `JWT_AUTH_HTTPONLY` : `refresh_token`를 사용할 예정이라면, **False**로 설정을 바꿔야한다.
    - **True**로 설정되어 있다면 `refresh_token` 없이 아래와 같이 리턴된다.
 
-   ![only_access_token](./images/only_access_token.png)
+   ![only_access_token](images/only_access_token.png)
 
 
 ### 참고

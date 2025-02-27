@@ -1,11 +1,10 @@
 ---
 title: 📚 프로그래머를 위한 파이썬
 date: 2023-04-09 23:04:26
-category: Book
-draft: false
+description: 프로에게 한 수 배우기
 ---
 
-<img src="./images/practices_of_the_python_pro.jpeg">
+<img src="images/practices_of_the_python_pro.jpeg">
 
 <br>
 

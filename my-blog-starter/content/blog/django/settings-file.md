@@ -1,10 +1,11 @@
 ---
-title: 📁 settings 디렉터리로 환경별 설정 관리하기
+title: 📌 django - 환경 파일 관리하기 
 date: 2023-02-20 22:02:31
-category: Django
-thumbnail: { thumbnailSrc }
-draft: false
+description: django에서 개발, 사용, 테스트 별로 환경 분리해서 settings 파일 관리하기
 ---
+
+django에서 settings 디렉토리 생성 후 개발, 사용, 테스트 별로 환경 분리해서 환경 파일 관리하기
+
 # Contents
 - [1. settings.py 이동](#1-settingspy-이동)
   - [1-1. `config` 하위에 settings 디렉토리 생성](#1-1-config-하위에-settings-디렉토리-생성)
