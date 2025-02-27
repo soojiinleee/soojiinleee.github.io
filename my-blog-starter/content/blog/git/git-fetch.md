@@ -1,9 +1,7 @@
 ---
-title: 👯 git fetch
+title: 📌 git fetch
 date: 2022-09-20 22:09:06
-category: Git
-thumbnail: { thumbnailSrc }
-draft: false
+description: git pull과 fetch 톺아보기
 ---
 # Contents
 - [Contents](#contents)

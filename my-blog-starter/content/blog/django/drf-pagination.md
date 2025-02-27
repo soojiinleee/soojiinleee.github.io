@@ -1,3 +1,11 @@
+---
+title: 📌 DRF 톺아보기 - Pagination
+date: 2025-02-19 14:03:76
+description: DRF에서 제공하는 페이지네이션 방법 정리
+---
+
+> [DRF 공식 문서](https://www.django-rest-framework.org/api-guide/pagination/)
+
 # Contents
 - [🔷 개념](#-🔷-개념)
 - [🔷 1. PageNumberPagination](#-🔷-1.-PageNumberPagination)

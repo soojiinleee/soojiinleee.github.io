@@ -1,3 +1,8 @@
+---
+title: 📌 DRF - annotate & serializer field
+date: 2025-02-19 16:03:76
+description: ORM의 annotate를 serializer field로 사용하기
+---
 # Contents
 - [🔷 요구 사항](#-🔷-요구-사항)
 - [🔷 문제 상황](#-🔷-문제 상황)

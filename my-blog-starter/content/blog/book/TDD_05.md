@@ -1,10 +1,11 @@
 ---
-title: '📚 TDD Chapter 05 : 사용자 입력 저장하기'
+title: 📚 TDD Chapter 05
 date: 2022-11-14 22:11:23
-category: Book
-thumbnail: { thumbnailSrc }
-draft: false
+description: 사내 스터디 - 파이썬을 이용한 클린 코드를 위한 테스트 주도 개발 챕터 5 (사용자 입력 저장하기)
 ---
+
+> [파이썬을 이용한 클린 코드를 위한 테스트 주도 개발](https://product.kyobobook.co.kr/detail/S000001556139)
+
 # Contents
 - [Contents](#contents)
 - [POST 요청 테스트](#post-요청-테스트)

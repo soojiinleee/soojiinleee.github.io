@@ -1,10 +1,11 @@
 ---
-title: '📚 Tiny Python Project 01 : : 파이썬 프로그램 작성 및 테스트 방법'
+title: 📚 Tiny Python Project 1
 date: 2022-04-24
 category: Book
-thumbnail: { thumbnailSrc }
-draft: false
+description: 21개의 작고 재미난 파이썬 프로젝트 챕터 1
 ---
+> [21개의 작고 재미난 파이썬 프로젝트](https://product.kyobobook.co.kr/detail/S000001952220)
+
 ## Pytest
 - 테스트용 모든 명령을 자동으로 실행
 - 몇 개의 테스트를 진행해서 맻 개가 성공했는지 알려줌

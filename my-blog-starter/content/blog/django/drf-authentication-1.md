@@ -1,9 +1,7 @@
 ---
-title: 👮 DRF Authentication(01) dj-rest-auth & TokenAuthentication
+title: 📌 DRF Authentication 1
 date: 2023-03-18 00:03:76
-category: Django
-thumbnail: { thumbnailSrc }
-draft: false
+description: DRF의 dj-rest-auth & TokenAuthentication 적용하기
 ---
 <br>
 
@@ -42,15 +40,15 @@ draft: false
     }
     ```
 - `rest_framework.authtoken` 앱을 추가하고 `migrate`를 하면 `DB`에 `authtoken_token` 테이블이 생성된다.
-  ![authtoken_token 테이블](./images/authtoken_token.png)
+  ![authtoken_token 테이블](images/authtoken_token.png)
 <br>
 
 - 로그인 성공 시 토큰이 발행되고, 
-  ![postman-response](./images/response_key.png)
+  ![postman-response](images/response_key.png)
 <br>
 
 - `authtoken_token`에 유저 id와 발행된 토큰이 key로 저장된다.
-  ![token 테이블](./images/saved_key.png)
+  ![token 테이블](images/saved_key.png)
 
 <br>
 
