@@ -1,4 +1,277 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Thu, 06 Mar 2025 10:22:52 GMT</lastBuildDate><item><title><![CDATA[📌 DRF - CursorPagination]]></title><description><![CDATA[공연 리뷰를 무한 스크롤로 조회하고 싶어서 로 구현 했으나, 공연순 정렬이 적용 되지 않아 생긴 문제를 정리한 포스팅 🙃 목차 문제 상황 원인 분석 해결 방법 OrderingFilter…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/django/drf-cursor_pagination/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/django/drf-cursor_pagination/</guid><pubDate>Thu, 06 Mar 2025 18:40:16 GMT</pubDate><content:encoded>&lt;p&gt;공연 리뷰를 무한 스크롤로 조회하고 싶어서 &lt;code class=&quot;language-text&quot;&gt;CursorPagination&lt;/code&gt;로 구현 했으나,&lt;br&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title><![CDATA[Gatsby Starter Blog RSS Feed]]></title><description><![CDATA[A starter blog demonstrating what Gatsby can do.]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io</link><generator>GatsbyJS</generator><lastBuildDate>Fri, 07 Mar 2025 10:02:02 GMT</lastBuildDate><item><title><![CDATA[📌 DRF - swagger 적용하기]]></title><description><![CDATA[를 이용했습니다 🙃 Contents  모듈로 분리 에 custom header 추가하기 🔷 schemas 모듈로 분리  파일에  내용이 많아서 코드 가독성이 안 좋다.   모듈로 swagger…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/django/drf-swagger/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/django/drf-swagger/</guid><pubDate>Fri, 07 Mar 2025 18:45:16 GMT</pubDate><content:encoded>&lt;blockquote&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;drf-spectacular&lt;/code&gt;를 이용했습니다 🙃&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;Contents&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;schemas&lt;/code&gt; 모듈로 분리&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;response&lt;/code&gt;에 custom header 추가하기&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;🔷 schemas 모듈로 분리&lt;/h1&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;views.py&lt;/code&gt; 파일에 &lt;code class=&quot;language-text&quot;&gt;swagger&lt;/code&gt; 내용이 많아서 코드 가독성이 안 좋다. &lt;br&gt;
+&lt;code class=&quot;language-text&quot;&gt;schemas.py&lt;/code&gt; 모듈로 swagger에 들어갈 내용은 옮기는 게 좋은 거 같다 🙃&lt;/p&gt;
+&lt;h3&gt;모듈 분리 전&lt;/h3&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;views.py&lt;/code&gt; : 공연 목록 조회&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; drf_spectacular&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;utils &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; extend_schema_view
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; drf_spectacular&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;utils &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; extend_schema
+
+&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;PerformanceViewSet&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;mixins&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ListModelMixin&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                         mixins&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;RetrieveModelMixin&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                         viewsets&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;GenericViewSet&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token triple-quoted-string string&quot;&gt;&quot;&quot;&quot;공연 리스트 및 상세 조회 API&quot;&quot;&quot;&lt;/span&gt;
+    serializer_class &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; PerformanceSerializer
+    pagination_class &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; StandardResultsSetPagination
+
+    &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;get_queryset&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;self&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        queryset &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; Performance&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;objects&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;select_related&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;genre&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;prefetch_related&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;liked_users&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        genre_id &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;request&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;query_params&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;genre_id&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        status &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;request&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;query_params&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;status&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; genre_id&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+            queryset &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; queryset&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;genre__id&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;genre_id&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; status&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+            queryset &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; queryset&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;status&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;status&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; queryset
+
+    &lt;span class=&quot;token decorator annotation punctuation&quot;&gt;@extend_schema&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+        tags&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;공연&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        summary&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 목록 조회&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        parameters&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+            OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;name&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;genre_id&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; description&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 장르 id&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; required&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token boolean&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+                name&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;status&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;token builtin&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                enum&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;PerformanceStatus&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;values&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                description&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 상태&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                examples&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+                    OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 예정&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;value&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;upcoming&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 중&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; value&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;ongoing&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 종료&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;value&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;ended&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;self&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; request&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;args&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;**&lt;/span&gt;kwargs&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;request&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;args&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;**&lt;/span&gt;kwargs&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;모듈 분리 후&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;schemas.py&lt;/code&gt; 모듈 추가&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; drf_spectacular&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;utils &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; extend_schema_view
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; drf_spectacular&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;utils &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; extend_schema
+
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;models &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; PerformanceStatus
+
+PERFORMANCE_LIST_SCHEMA &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; extend_schema&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+        tags&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;공연&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        summary&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 목록 조회&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        parameters&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+            OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;name&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;genre_id&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; description&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 장르 id&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; required&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token boolean&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+                name&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;status&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;token builtin&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                enum&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;PerformanceStatus&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;values&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                description&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 상태&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                examples&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+                    OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 예정&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;value&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;upcoming&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 중&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; value&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;ongoing&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                    OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 종료&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;value&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;ended&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;ol start=&quot;2&quot;&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;views.py&lt;/code&gt; : &lt;code class=&quot;language-text&quot;&gt;schemas.py&lt;/code&gt;에서 &lt;code class=&quot;language-text&quot;&gt;PERFORMANCE_LIST_SCHEMA&lt;/code&gt;의 내용 데코레이터로 사용&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;schemas &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; PERFORMANCE_LIST_SCHEMA
+
+&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;PerformanceViewSet&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;mixins&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;ListModelMixin&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                         mixins&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;RetrieveModelMixin&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                         viewsets&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;GenericViewSet&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token triple-quoted-string string&quot;&gt;&quot;&quot;&quot;공연 리스트 및 상세 조회 API&quot;&quot;&quot;&lt;/span&gt;
+    serializer_class &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; PerformanceSerializer
+    pagination_class &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; StandardResultsSetPagination
+
+    &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;get_queryset&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;self&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        queryset &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; Performance&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;objects&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;select_related&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;genre&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;prefetch_related&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;liked_users&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        genre_id &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;request&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;query_params&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;genre_id&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        status &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;request&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;query_params&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;status&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token boolean&quot;&gt;None&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; genre_id&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+            queryset &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; queryset&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;genre__id&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;genre_id&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; status&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+            queryset &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; queryset&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;filter&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;status&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;status&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; queryset
+
+    &lt;span class=&quot;token decorator annotation punctuation&quot;&gt;@PERFORMANCE_LIST_SCHEMA&lt;/span&gt;
+    &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;self&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; request&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;args&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;**&lt;/span&gt;kwargs&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;super&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;request&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;*&lt;/span&gt;args&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;**&lt;/span&gt;kwargs&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;hr&gt;
+&lt;h1&gt;response에 custom header 추가&lt;/h1&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;count&lt;/code&gt;, &lt;code class=&quot;language-text&quot;&gt;next&lt;/code&gt; , &lt;code class=&quot;language-text&quot;&gt;previous&lt;/code&gt; 와 같이 페이지네이션과 관련된 내용은 &lt;code class=&quot;language-text&quot;&gt;response&lt;/code&gt; header로 전달하도록 구현했으나, swagger에서는 자동으로 body 값으로 보내고 있다&lt;/p&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;BasePaginationResponseMixin&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;token triple-quoted-string string&quot;&gt;&quot;&quot;&quot;공통 페이지네이션 응답 처리를 위한 Mixin&quot;&quot;&quot;&lt;/span&gt;
+
+    &lt;span class=&quot;token keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;get_paginated_response&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;self&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; data&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+        response &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; Response&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;data&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get_next_link&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+            response&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;headers&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;Next-Page&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get_next_link&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get_previous_link&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+            response&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;headers&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;Previous-Page&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;get_previous_link&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+
+        &lt;span class=&quot;token comment&quot;&gt;# 전체 데이터 개수 추가 (PageNumberPagination만 적용)&lt;/span&gt;
+        &lt;span class=&quot;token keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;hasattr&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;self&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;page&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;token keyword&quot;&gt;and&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;hasattr&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;page&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;paginator&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+            response&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;headers&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;Total-Count&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; self&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;page&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;paginator&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;count
+
+        &lt;span class=&quot;token keyword&quot;&gt;return&lt;/span&gt; response
+
+&lt;span class=&quot;token keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;token class-name&quot;&gt;StandardResultsSetPagination&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;BasePaginationResponseMixin&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; PageNumberPagination&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt;
+    page_size &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;20&lt;/span&gt;
+    page_size_query_param &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&apos;page_size&apos;&lt;/span&gt;
+    max_page_size &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token number&quot;&gt;100&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;챗지피티도 계속 틀린 답만 내고 swagger에는 관련 기능이 있는데 &lt;code class=&quot;language-text&quot;&gt;drf-spectacular&lt;/code&gt; 의 &lt;code class=&quot;language-text&quot;&gt;OpenApiResponse&lt;/code&gt; 에는 response header에 대한 내용이 없고,,, 🫠&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;language-text&quot;&gt;drf-spectacular&lt;/code&gt; 에 issue에서 검색 하니깐 나랑 같은 기능을 물어본 사람이 있어서 관련 PR까지 추적해서 찾았다&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://swagger.io/docs/specification/v3_0/describing-responses/#response-headers&quot;&gt;swagger response-header&lt;/a&gt;&lt;br&gt;
+&lt;a href=&quot;https://github.com/tfranzel/drf-spectacular/issues/283&quot;&gt;drf-spectacular issue&lt;/a&gt;&lt;br&gt;
+&lt;a href=&quot;https://github.com/maykinmedia/drf-spectacular/commit/179b4e14c22a8a3dafaac231ca2734309043db87&quot;&gt;drf-spectacular commit&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;request의 쿼리 파라미터와 동일하게 &lt;code class=&quot;language-text&quot;&gt;OpenApiParameter&lt;/code&gt; 사용하고 아래 값만 설정하면 된다&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;response=True&lt;/code&gt; 로 설정해야 response에서 사용되는 내용으로 표시&lt;/li&gt;
+&lt;li&gt;&lt;code class=&quot;language-text&quot;&gt;location=OpenApiParameter.HEADER&lt;/code&gt; 표시해야 함&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&quot;gatsby-highlight&quot; data-language=&quot;python&quot;&gt;&lt;pre class=&quot;language-python&quot;&gt;&lt;code class=&quot;language-python&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; drf_spectacular&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;types &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; OpenApiTypes
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; drf_spectacular&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;utils &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; OpenApiResponse
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; drf_spectacular&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;utils &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; extend_schema
+
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;models &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; PerformanceStatus
+&lt;span class=&quot;token keyword&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;serializers &lt;span class=&quot;token keyword&quot;&gt;import&lt;/span&gt; PerformanceSerializer
+
+PAGINATION_PARAMS &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+    OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+        name&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Total-Count&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token builtin&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        location&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;HEADER&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        response&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token boolean&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        description&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;전체 데이터 개수&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+        name&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Next-Page&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token builtin&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;OpenApiTypes&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;URI&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        location&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;HEADER&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        response&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token boolean&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        description&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;다음 페이지 URL&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+        name&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;Previous-Page&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token builtin&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;OpenApiTypes&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;URI&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        location&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;HEADER&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        response&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token boolean&quot;&gt;True&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        description&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;이전 페이지 URL&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;
+
+PERFORMANCE_LIST_SCHEMA &lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt; extend_schema&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+    tags&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&apos;공연&apos;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    summary&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 목록 조회&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    parameters&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+        OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;name&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;genre_id&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; description&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 장르 id&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; required&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token boolean&quot;&gt;False&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;token builtin&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        OpenApiParameter&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+            name&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;status&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;token builtin&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token builtin&quot;&gt;str&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            enum&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;PerformanceStatus&lt;span class=&quot;token punctuation&quot;&gt;.&lt;/span&gt;values&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            description&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 상태&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            examples&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;
+                OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 예정&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;value&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;upcoming&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 중&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt; value&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;ongoing&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+                OpenApiExample&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 종료&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;value&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;ended&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;+&lt;/span&gt; PAGINATION_PARAMS&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+    responses&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;token number&quot;&gt;200&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;:&lt;/span&gt; OpenApiResponse&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;
+            response&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;PerformanceSerializer&lt;span class=&quot;token punctuation&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+            description&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;공연 목록 리스트&quot;&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;,&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;결과 - swagger 화면&lt;/h3&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 630px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/e1766a8a8ea282537ead0fbc46ec34bd/3b2f8/swagger_1.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 61.39240506329114%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAABYlAAAWJQFJUiTwAAACE0lEQVR42p2S309SYRjHz18SWm0hh8M5hwMyV2QEJOegqYChQltkIUqmsgwFNERZFtVY2caWLh0mOZj92PqDumh1kT8ulG7Kb+97sLWuOnXx2fPs2ft+3/f73cOUN2soV6rY2n6PSvUNXtfeYW1jCy9ebmBl7ZUmVtc3UVpZR/XtBzAfv+zj09dD7Bx8x/43YK8O7B4e/Rc7Bz/A0Ka4XMK1yBCGY3FEY6OEOIZHtBMbvYXI0E3ML9wHQ381Nj4J0WwCb+VhMLSANRqg15/RDL2j051AV3cPmL36EZIzGXR2yugKKjjntKPN3oZWWyusVqsmbDYbOM6I/oEQFQSmkik42ttx3n4WFqsFZtEMSZI0Q0WNRhbBgUEiSCxPJqbIUIIoieCMHEwm0z/BCwJOnzqJXp+/YTlLwvQHfOgLBSB7vfDICmTFS1D+ikeWcZlkF7p6HfOLBTB0XcqVGgqPiig+e47ZbA7T6Vk1V1pVUr9r8pjp9BxmMg3Sc1mkMvewXFptCOYW8hjsv4JoNIpwOAyXy6Vmo1riiSUK6QWeh0DsiaKgzliWVeE4Ds3NTeju6W0ILj54jMiNEQSDQfQFAvD7fFAUGU7nRbiJeEfHJbjdLnhIVYhFh+MCLORB1mBAi16v1iadjlgngp9366rlh0+eIpdfQuLOXbKXCXU3KbcnSP+L41l8bIIw/scZuuD5pQJ+Ag8PGmiZD7mfAAAAAElFTkSuQmCC&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;swagger_1&quot;
+        title=&quot;&quot;
+        src=&quot;/static/e1766a8a8ea282537ead0fbc46ec34bd/f058b/swagger_1.png&quot;
+        srcset=&quot;/static/e1766a8a8ea282537ead0fbc46ec34bd/c26ae/swagger_1.png 158w,
+/static/e1766a8a8ea282537ead0fbc46ec34bd/6bdcf/swagger_1.png 315w,
+/static/e1766a8a8ea282537ead0fbc46ec34bd/f058b/swagger_1.png 630w,
+/static/e1766a8a8ea282537ead0fbc46ec34bd/40601/swagger_1.png 945w,
+/static/e1766a8a8ea282537ead0fbc46ec34bd/78612/swagger_1.png 1260w,
+/static/e1766a8a8ea282537ead0fbc46ec34bd/3b2f8/swagger_1.png 2790w&quot;
+        sizes=&quot;(max-width: 630px) 100vw, 630px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span
+      class=&quot;gatsby-resp-image-wrapper&quot;
+      style=&quot;position: relative; display: block; margin-left: auto; margin-right: auto; max-width: 630px; &quot;
+    &gt;
+      &lt;a
+    class=&quot;gatsby-resp-image-link&quot;
+    href=&quot;/static/209349ecbb65eefd5706b1734a29d56d/cc95c/swagger_2.png&quot;
+    style=&quot;display: block&quot;
+    target=&quot;_blank&quot;
+    rel=&quot;noopener&quot;
+  &gt;
+    &lt;span
+    class=&quot;gatsby-resp-image-background-image&quot;
+    style=&quot;padding-bottom: 62.0253164556962%; position: relative; bottom: 0; left: 0; background-image: url(&apos;data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAMCAYAAABiDJ37AAAACXBIWXMAABYlAAAWJQFJUiTwAAABuklEQVR42qWSa2vTYBiG82Pmhwmu9mBotU2jYN3hQ1sPuP8giqIIyqROFPwqfvIf+QMK4jqn6XpI0nPTZF3befm8jRvD4eYQciVP7jfvnSd5bq3V8+l6YwbBhGEw/S/6/gSt0QnYdUfUhNZwJkxxh5NzY/fH4uOhdUYzdpwWlWYDe+jheAH9Pc5N1z+g7U3RVFH+XuVzucyWVWd718Fq9LCaPap2/59Qz9bbo9DQm8CHj5/IFwrcXr9Lcf0OhftF8veKLK+sCiunsrq2RtbMslHaxJ+BNppCafMtqaSOnrpCXI8J8fk1cjlCJHI60WiUCwsLPHj4mOCnGCrXl69ek752les5k3hczGIhiUTiTHRd5+LiIo+ePCU4ODTcKHHDNLmVz5HMJlm6tHRmZ3/tUIbMm3fv5ZNT3FzOYZiGdJsmnQ7JZDJH9UkyGIZBLBbl2fMXYYcqNpWqy5edOhXLkdqRSbtzvtVC/euPJts190hXbFl2qEut9lgybeWlqVHXWirU+8jBQDI1GIeo+2Y3wO7thWvH9K78K0fCfKj3gt85VKdG25+j6uN0JAJ10dUL/1xzB/s0Oif3/ALYYdm3DhFRcwAAAABJRU5ErkJggg==&apos;); background-size: cover; display: block;&quot;
+  &gt;&lt;/span&gt;
+  &lt;img
+        class=&quot;gatsby-resp-image-image&quot;
+        alt=&quot;swagger_2&quot;
+        title=&quot;&quot;
+        src=&quot;/static/209349ecbb65eefd5706b1734a29d56d/f058b/swagger_2.png&quot;
+        srcset=&quot;/static/209349ecbb65eefd5706b1734a29d56d/c26ae/swagger_2.png 158w,
+/static/209349ecbb65eefd5706b1734a29d56d/6bdcf/swagger_2.png 315w,
+/static/209349ecbb65eefd5706b1734a29d56d/f058b/swagger_2.png 630w,
+/static/209349ecbb65eefd5706b1734a29d56d/40601/swagger_2.png 945w,
+/static/209349ecbb65eefd5706b1734a29d56d/78612/swagger_2.png 1260w,
+/static/209349ecbb65eefd5706b1734a29d56d/cc95c/swagger_2.png 2796w&quot;
+        sizes=&quot;(max-width: 630px) 100vw, 630px&quot;
+        style=&quot;width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;&quot;
+        loading=&quot;lazy&quot;
+        decoding=&quot;async&quot;
+      /&gt;
+  &lt;/a&gt;
+    &lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;✓ 데이터 수가 적어서 &lt;code class=&quot;language-text&quot;&gt;next-page&lt;/code&gt;와 &lt;code class=&quot;language-text&quot;&gt;previouse-page&lt;/code&gt;는 response header에 포함 안 된 상태&lt;/p&gt;
+&lt;br&gt;
+&lt;h3&gt;ref.&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;a href=&quot;https://techblog.yogiyo.co.kr/django-rest-framework-api-document-generator-feat-drf-spectacular-585fcabec404&quot;&gt;요기요 기술 블로그&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;br&gt;
+&lt;br&gt;</content:encoded></item><item><title><![CDATA[📌 DRF - CursorPagination]]></title><description><![CDATA[공연 리뷰를 무한 스크롤로 조회하고 싶어서 로 구현 했으나, 공연순 정렬이 적용 되지 않아 생긴 문제를 정리한 포스팅 🙃 목차 문제 상황 원인 분석 해결 방법 OrderingFilter…]]></description><link>https://gatsbystarterblogsource.gatsbyjs.io/django/drf-cursor_pagination/</link><guid isPermaLink="false">https://gatsbystarterblogsource.gatsbyjs.io/django/drf-cursor_pagination/</guid><pubDate>Thu, 06 Mar 2025 18:40:16 GMT</pubDate><content:encoded>&lt;p&gt;공연 리뷰를 무한 스크롤로 조회하고 싶어서 &lt;code class=&quot;language-text&quot;&gt;CursorPagination&lt;/code&gt;로 구현 했으나,&lt;br&gt;
 공연순 정렬이 적용 되지 않아 생긴 문제를 정리한 포스팅 🙃&lt;/p&gt;
 &lt;h1&gt;목차&lt;/h1&gt;
 &lt;ul&gt;
