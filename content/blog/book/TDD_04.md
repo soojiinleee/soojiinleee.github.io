@@ -1,10 +1,11 @@
 ---
 title: 📚 TDD Chapter 4
 date: 2022-05-03
-description: 사내 스터디 - 파이썬을 이용한 클린 코드를 위한 테스트 주도 개발 챕터 4 (Django templates을 이용한 기능 테스트)
+description: 사내 스터디 - 파이썬을 이용한 클린 코드를 위한 테스트 주도 개발 챕터 4
 ---
 
 > [파이썬을 이용한 클린 코드를 위한 테스트 주도 개발](https://product.kyobobook.co.kr/detail/S000001556139)
+Django templates을 이용한 기능 테스트
 
 # 사용자 반응 테스트 (with `Selenium`)
 기능 테스트 파일
